@@ -6,10 +6,20 @@ from sklearn.model_selection import train_test_split, ShuffleSplit
 
 problem_title = 'EDFA'
 _NB_CHANNELS = 32  # C100
+
+# We are splitting both train/test and train/valid using the campaign
+# indices. Training campaigns will be all subcascades, and they fully
+# go in the training set. Each train/valid split on the trianing set
+# is then using _cv_valid_rate of the training instances for training.
+# .They will not be part of the validation.
+# Test campaigns will be split: _test_rate of them will be in the test
+# set and (1 - _test_rate) in the training set. Of this latter, 
+# _cv_valid_rate will be in each fold validation set, and
+# (1 - _cv_valid_rate) will be part of each fold training set.
 _train_campaigns = [1, 2]
 _test_campaigns = [4, 5]
-# the proportion of test campaign instances going into the training set
-_test_rate = 0.8  
+_test_rate = 0.8
+_cv_valid_rate = 0.5
 
 class EM99(rw.score_types.BaseScoreType):
 
