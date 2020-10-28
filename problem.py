@@ -4,7 +4,7 @@ import rampwf as rw
 import numpy as np
 from sklearn.model_selection import train_test_split, ShuffleSplit
 
-problem_title = 'EDFA'
+problem_title = 'Optical network modelling'
 _NB_CHANNELS = 32  # C100
 
 # We are splitting both train/test and train/valid using the campaign
