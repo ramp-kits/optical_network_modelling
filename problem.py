@@ -17,7 +17,7 @@ _NB_CHANNELS = 32  # C100
 # _cv_valid_rate will be in each fold validation set, and
 # (1 - _cv_valid_rate) will be part of each fold training set.
 _train_campaigns = [1, 2]
-_test_campaigns = [4, 5]
+_test_campaigns = [3, 4]
 _test_rate = 0.8
 _cv_valid_rate = 0.5
 
@@ -81,8 +81,8 @@ score_types = [
 ]
 
 
-def _read_data(path, data_label, campaign):
-    data_path = os.path.join(path, 'data', data_label)
+def _read_data(path, campaign):
+    data_path = os.path.join(path, 'data')
     with open(os.path.join(data_path, f'c{campaign}', 'X.pkl'), 'rb') as f:
         X = pickle.load(f)
         # add campaign index as last column to X
@@ -108,11 +108,11 @@ def _train_test_indices(X):
 
 # Load only full cascades from the test campaigns. is_test_int = 1 of loading 
 # test, 0 if loading the portion of the test that goes in train.
-def _load_test(path, data_label, is_test_int):
+def _load_test(path, is_test_int):
     Xs = []
     ys = []
     for campaign in _test_campaigns:
-        X, y = _read_data(path, data_label, campaign)
+        X, y = _read_data(path, campaign)
         mask = _full_cascade_mask(X)  # only full cascades in test set
         test_is = _train_test_indices(X[mask])[is_test_int]
         Xs.append(X[mask][test_is])
@@ -120,22 +120,22 @@ def _load_test(path, data_label, is_test_int):
     return np.concatenate(Xs), np.concatenate(ys)
     
 
-def get_train_data(path='.', data_label='C100'):
+def get_train_data(path='.'):
     Xs = []
     ys = []
     for campaign in _train_campaigns:
-        X, y = _read_data(path, data_label, campaign)
+        X, y = _read_data(path, campaign)
         Xs.append(X)
         ys.append(y)
     # adding (1 - _test_rate) of the test full cascades to the training data
-    X_test_in_train, y_test_in_train = _load_test(path, data_label, is_test_int=0)
+    X_test_in_train, y_test_in_train = _load_test(path, is_test_int=0)
     Xs.append(X_test_in_train)
     ys.append(y_test_in_train)
     return np.concatenate(Xs), np.concatenate(ys)
 
 
-def get_test_data(path='.', data_label=''):
-    return _load_test(path, data_label, is_test_int=1)
+def get_test_data(path='.'):
+    return _load_test(path, is_test_int=1)
 
 
 def get_cv(X, y):
