@@ -1,0 +1,11 @@
+name: ramp-optical_network_modelling
+channels:
+  - defaults
+dependencies:
+  - pip
+  - numpy
+  - scikit-learn>=0.22
+  - pandas
+  - matplotlib
+  - pip:
+    - https://github.com/paris-saclay-cds/ramp-workflow/archive/advanced.zip
