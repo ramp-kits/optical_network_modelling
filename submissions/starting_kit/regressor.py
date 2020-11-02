@@ -13,4 +13,4 @@ class Regressor:
 
     def predict(self, X):
         X_array = np.array([np.array(X_i) for X_i in X[:, 1]])
-        return self.reg.predict(X_array)
+        return np.maximum(0, self.reg.predict(X_array))
