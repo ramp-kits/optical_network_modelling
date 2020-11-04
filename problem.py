@@ -183,5 +183,3 @@ def get_cv(X, y):
             (train_campaigns_is[t_is], test_campaigns_is[tt_is]))
         valid_is = test_campaigns_is[tv_is]
         yield train_is, valid_is
-        # TODO remove when tests done
-        # yield train_campaigns_is[t_is], test_campaigns_is[tt_is])
